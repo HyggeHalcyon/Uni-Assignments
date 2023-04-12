@@ -1,5 +1,5 @@
-#Nama: Muhammad Fawwaz Razani
-#NRP: 5026221079
+#Nama: 
+#NRP: 
 #Class: C
 
 import pandas as pd
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #importing and formatting dataset
-dataset = "D:\College\ITS\Academic\Semester 2\Statistics\Assignments\ETS\\access_to_water_and_sanitation.csv"
+dataset = "\\access_to_water_and_sanitation.csv"
 fields = ['Service Type', 'Year', 'Coverage', 'Population', 'Service level']
 ds = pd.read_csv(dataset, skipinitialspace=True, usecols=fields)
 
