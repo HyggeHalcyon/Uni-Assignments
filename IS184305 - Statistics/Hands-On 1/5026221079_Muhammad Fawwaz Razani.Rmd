@@ -1,6 +1,6 @@
 ---
 title   : "Tugas Prkatikum 1"
-author  : "Muhammad Fawwaz Razani - 5026221079"
+author  : "Name - Student ID"
 date    : "2023-03-06"
 output  : html_document
 ---
