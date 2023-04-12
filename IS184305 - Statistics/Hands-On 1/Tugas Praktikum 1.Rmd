@@ -1,0 +1,32 @@
+---
+title   : "Tugas Prkatikum 1"
+author  : "Statistika C"
+date    : "2023-03-06"
+output  : html_document
+---
+
+##Data untuk menjawab soal 
+
+```{r load-abrbuthnot-data, eval=TRUE}
+source("http://www.openintro.org/stat/data/arbuthnot.R")
+```
+
+```{r load-present-data}
+borncity
+```
+## Nomor 1
+Tahun berapa saja yang termasuk dalam kumpulan data kelahiran di kota Surabaya? 
+Apa dimensi dari dataframe dan apa saja nama variabel atau kolom pada data?
+
+## Nomor 2
+Bagaimana jumlah data kelahiran di kota Surabaya dibandingkan dengan data Arbuthnot? Apakah mereka berada pada skala yang sama?
+
+## Nomor 3
+Buatlah plot yang menampilkan rasio laki-laki dan perempuan untuk setiap tahun dalam kumpulan data kelahiran di Surabaya!
+
+## Nomor 4
+Hitung jumlah seluruh anak laki-laki pada masing-masing data (arbuthnot dan data kelahiran kota Surabaya)!
+Apakah pengamatan pada data Arbuthnot mengenai anak laki-laki yang dilahirkan memiliki proporsi yang lebih besar dibandingkan anak laki-laki di SUrabaya? Sertakan gambaran plot dalam tanggapan Anda.
+
+## Nomor 5
+Pada tahun berapa kita melihat jumlah kelahiran terbanyak di Surabaya? 
