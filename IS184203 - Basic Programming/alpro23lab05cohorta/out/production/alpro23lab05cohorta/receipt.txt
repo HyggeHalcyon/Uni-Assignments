@@ -1,6 +1,0 @@
-Product Receipt
---------------------
-Toothpaste 24000
-Shampoo 46000
-Bodysoap 35000
-Facewash 58000
