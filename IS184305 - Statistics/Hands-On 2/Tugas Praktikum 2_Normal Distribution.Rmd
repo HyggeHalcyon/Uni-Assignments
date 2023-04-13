@@ -1,0 +1,30 @@
+---
+title   : "Tugas Praktikum 2_Normal Distribution"
+author  : "Statistika C"
+date    : ".........."
+output  : html_document
+---
+
+##Data untuk menjawab soal 
+
+```{r load-data, eval=FALSE}
+download.file("http://www.openintro.org/stat/data/bdims.RData", destfile = "bdims.RData")
+load("bdims.RData")
+```
+
+```{r}
+bdims
+```
+-   Now let's consider some of the other variables in the body dimensions dataset.  Using the figures at the end of the exercises, match the histogram to its normal probability plot.  All of the variables have been standardized (first subtract the mean, then divide by the standard deviation), so the units won't be of any help.  If you are uncertain based on these figures, generate the plots in R to check. 
+
+    **a.** The histogram for female biiliac (pelvic) diameter (`bii.di`) belongs to normal probability plot letter ____.
+
+    **b.** The histogram for female elbow diameter (`elb.di`) belongs to normal  probability plot letter ____.
+
+    **c.** The histogram for general age (`age`) belongs to normal probability  plot letter ____.
+
+    **d.** The histogram for female chest depth (`che.de`) belongs to normal probability plot letter ____.
+
+-   Note that normal probability plots C and D have a slight stepwise pattern. Why do you think this is the case?
+
+-   As you can see, normal probability plots can be used both to assess normality and visualize skewness.  Make a normal probability plot for female knee diameter (`kne.di`).  Based on this normal probability plot, is this  variable left skewed, symmetric, or right skewed?  Use a histogram to confirm your findings.
