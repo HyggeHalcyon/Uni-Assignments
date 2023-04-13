@@ -27,7 +27,7 @@ Using `calc_streak`, compute the streak lengths of `sim_basket`.
 
 -   Describe the distribution of streak lengths. What is the typical streak 
     length for this simulated independent shooter with a 45% shooting percentage?
-    How long is the player's longest streak of baskets in 133 shots?
+    How long is the player\'s longest streak of baskets in 133 shots?
 Answer:
 ```{r independent-shooter-with-summary-description}
 kobe_streak<-calc_streak(kobe$basket)
