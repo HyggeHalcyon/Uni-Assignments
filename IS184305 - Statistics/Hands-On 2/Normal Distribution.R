@@ -1,11 +1,10 @@
 ---
-title: "The normal distribution"
-output:
-  html_document:
-    theme: cerulean
-    highlight: pygments
-    css: ../lab.css
+title   : "Tugas Praktikum 2_Normal Distribution"
+author  : "Statistika C"
+date    : ".........."
+output  : html_document
 ---
+
 ##Data untuk menjawab soal 
 
 ```{r load-data, eval=FALSE}
