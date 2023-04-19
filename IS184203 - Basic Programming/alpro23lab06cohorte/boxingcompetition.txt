@@ -1,0 +1,11 @@
+5
+Alfa,91,flyweight
+Joko,55,featherweight
+Carla,79,flyweight
+Eva,96,flyweight
+Gary,76,featherweight
+Beta,80,flyweight
+Harry,90,featherweight
+Irvin,81,featherweight
+Dena,75,flyweight
+Fera,67,featherweight

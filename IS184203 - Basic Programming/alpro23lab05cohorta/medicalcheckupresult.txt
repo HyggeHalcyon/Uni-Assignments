@@ -1,0 +1,4 @@
+Medical Checkup Results
+-----------------------
+blood glucose:105 mg/dL
+cholesterol:250 mg/dL
