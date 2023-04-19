@@ -240,7 +240,7 @@ public class Main {
         }
     }
 
-    static int tsp(int[][] graph, boolean[] v, int currPos, int n, int count, int cost, int ans, String path) {
+    static int tsp(int[][] graph, boolean[] v, int currPos, int numOfCities, int count, int cost, int ans, String path) {
         String vocabulary = "XABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         // If last node is reached and it has a link
@@ -248,7 +248,7 @@ public class Main {
         // keep the minimum value out of the total cost
         // of traversal and "ans"
         // Finally return to check for more possible values
-        if (count == n && graph[currPos][0] > 0) {
+        if (count == numOfCities && graph[currPos][0] > 0) {
             //ans = Math.min(ans, cost + graph[currPos][0]);
             if(ans > cost + graph[currPos][0]){
                 ans = cost + graph[currPos][0];
@@ -263,11 +263,11 @@ public class Main {
         // Loop to traverse the adjacency list
         // of currPos node and increasing the count
         // by 1 and cost by graph[currPos,i] value
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < numOfCities; i++) {
             if (v[i] == false && graph[currPos][i] > 0) {
                 // Mark as visited
                 v[i] = true;
-                ans = tsp(graph, v, i, n, count + 1, cost + graph[currPos][i], ans, path + "" + vocabulary.charAt(i));
+                ans = tsp(graph, v, i, numOfCities, count + 1, cost + graph[currPos][i], ans, path + "" + vocabulary.charAt(i));
                 // Mark ith node as unvisited
                 v[i] = false;
             }
