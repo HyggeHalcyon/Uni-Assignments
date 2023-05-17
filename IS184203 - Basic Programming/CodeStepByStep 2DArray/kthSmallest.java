@@ -26,11 +26,21 @@
  * between 1 and the number of elements in the matrix, inclusive.
  */
 
+import java.util.Arrays;
+
 public class kthSmallest {
     public static int kthSmallest(int[][] matrix, int k){
-        
+        int[] oneD = new int[matrix.length * matrix[0].length];
 
-        return 1;
+        int count = 0;
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                oneD[count++] = matrix[i][j];
+            }
+        }
+
+        Arrays.sort(oneD);
+
+        return oneD[k - 1];
     }
-    
 }

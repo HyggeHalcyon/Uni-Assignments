@@ -40,6 +40,6 @@
 
 public class xRegions {
     public static int[][] xRegions(int[][] board){
-
+        
     }
 }

@@ -40,30 +40,25 @@ public class countIslands {
     }
 
     public static int countIslands(int[][] map){
-        if(map.length <= 0){
-            return ;
-        }
-        
         int islandCount = 0;
-        for(int i = 0; i < map.length - 1; i++){
-            for(int j = 0; j < map[0].length - 1; j++){
-                if(map[i][j] == 1){
-                    if(map[i + 1][j] == 1){
+
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map[i].length; j++){
+                if(i == 0 && j == 0){
+                    if(map[i][j] == 1){
                         islandCount++;
-                        map[i][j] = 0;
-                        map[i + 1][j] = 0;
-                    } else if(map[i - 1][j] == 1){
+                    }
+                } else if( i == 0){
+                    if(map[i][j] == 1 && map[i][j-1] != 1){
                         islandCount++;
-                        map[i][j] = 0;
-                        map[i - 1][j] = 0;
-                    } else if(map[i][j + 1] == 1){
+                    }
+                } else if( j == 0){
+                    if(map[i][j] == 1 && map[i-1][j] != 1 && map[i][j+1] != 1){
                         islandCount++;
-                        map[i][j] = 0;
-                        map[i][j + 1] = 0;
-                    } else if(map[i][j - 1] == 1){
+                    }
+                } else {
+                    if(map[i][j] == 1 && map[i-1][j] != 1 && map[i][j-1] != 1){
                         islandCount++;
-                        map[i][j] = 0;
-                        map[i][j - 1] = 0;
                     }
                 }
             }

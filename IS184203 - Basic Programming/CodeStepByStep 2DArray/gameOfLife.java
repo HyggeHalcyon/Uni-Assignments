@@ -36,7 +36,18 @@
  * number of columns. You may assume that no values appear in the board other than 0 and 1.
  */
 
+import java.util.Arrays;
+
 public class gameOfLife {
+    public static void main(String[] args){
+        int[][] board = {{0, 0, 1, 0, 1},
+                        {0, 0, 1, 0, 0},
+                        {0, 0, 1, 0, 0},
+                        {0, 0, 1, 1, 0},
+                        {0, 0, 0, 0, 0}};
+        gameOfLife(board);
+    }
+
    public static int[][] gameOfLife(int[][] board){
       if(board.length == 0){
          return new int[0][0];
@@ -44,17 +55,29 @@ public class gameOfLife {
 
      int row = board.length;
      int column = board[0].length;
-     int[][] duplicate = new int[row][column];
+     int[][] duplicateBoard = new int[row + 2][column + 2];
 
-     for(int i = 0; i < duplicate.length; i++){
-         for(int j = 0; j < duplicate[i].length; j++){
-             duplicate[i][j] = board[i][j];
-         }
+     for(int i = 1; i < duplicateBoard.length - 1; i++){
+        for(int j = 1; j < duplicateBoard[i].length - 1; j++){
+            duplicateBoard[i][j] = board[i - 1][j - 1];
+        }
      }
 
-     for(int i = 0; i < duplicate.length; i++){
-      for(int j = 0; j < duplicate[0].length; j++){
-         
+     int livingCell;
+     for(int i = 1; i < duplicateBoard.length - 1; i++){
+      for(int j = 1; j < duplicateBoard[i].length - 1; j++){
+        livingCell = 0;
+        if(duplicateBoard[i-1][j-1] == 1) livingCell++;
+        if(duplicateBoard[i-1][j] == 1) livingCell++;
+        if(duplicateBoard[i-1][j+1] == 1) livingCell++;
+        if(duplicateBoard[i][j+1] == 1) livingCell++;
+        if(duplicateBoard[i+1][j+1] == 1) livingCell++;
+        if(duplicateBoard[i+1][j] == 1) livingCell++;
+        if(duplicateBoard[i+1][j-1] == 1) livingCell++;
+        if(duplicateBoard[i][j-1] == 1) livingCell++;
+
+        if(duplicateBoard[i][j] == 0 && livingCell == 3) board[i - 1][j - 1] = 1;
+        else if(duplicateBoard[i][j] == 1 && (livingCell < 2 || livingCell > 3)) board[i - 1][j - 1] = 0;
       }
      }
 
