@@ -2,12 +2,11 @@
  * ES234211 - Basic Programming
  * Computing Lab. Work
  * Coursework No.   : 10
- * Student ID       : 5026221079
- * Student Name     : Muhammad Fawwaz Razani
- * Class            : C
- * Cohort           : A
+ * Student ID       : 
+ * Student Name     : 
+ * Class            : 
+ * Cohort           : 
  */
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
