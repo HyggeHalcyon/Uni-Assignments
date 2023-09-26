@@ -1,5 +1,5 @@
 public class Week02 {
-    public static void main(String[] args){
+    public static void OOPExample(){
         // Basic Class Example
         // Creating objects (instances) of the Dog class
         Dog dog1 = new Dog("Buddy", 3);
