@@ -307,6 +307,7 @@ FROM
   orders NATURAL 
 JOIN 
   orderdetails;
+  
 SELECT 
   COUNT(*) 
 FROM 
