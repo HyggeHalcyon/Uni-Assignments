@@ -1,5 +1,5 @@
 -- check 1
-ALTER TABLE 
+ALTER TABLE
   country 
 ADD 
   CONSTRAINT CHK_NoSameCode2 

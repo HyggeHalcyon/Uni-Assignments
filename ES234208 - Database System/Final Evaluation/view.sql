@@ -15,7 +15,7 @@ WHERE
 CREATE VIEW continentOverview AS
 SELECT 
   C.`Continent`, 
-  COUNT(C.`Name`) AS `# of Countries`, 
+  COUNT(DISTINCT C.`Name`) AS `# of Countries`, 
   COUNT(DISTINCT CL.`Language`) AS `# of Languages` 
 FROM 
   country C 
