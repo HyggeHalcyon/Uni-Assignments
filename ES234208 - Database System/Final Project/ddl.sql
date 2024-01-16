@@ -152,6 +152,13 @@ CREATE TABLE "Donasi_Harta" (
   "created_at" timestamp default current_timestamp
 );
 
+DROP TABLE IF EXISTS "Inventaris" CASCADE;
+CREATE TABLE "Inventaris" (
+  "Kode" uuid UNIQUE PRIMARY KEY,
+  "Nama_Barang" VARCHAR(255),
+  "Jumlah_Barang" INTEGER
+);
+
 ALTER TABLE 
   "Pengurus" 
 ADD 
