@@ -5,7 +5,7 @@ USER root
 RUN mkdir -p /usr/config
 WORKDIR /usr/config
 
-# Bundle MSSQL Backup (download it)
+# Bundle MSSQL Backup (TO-DO: download it)
 COPY data/*.bak /usr/config
 
 # Bundle config source
