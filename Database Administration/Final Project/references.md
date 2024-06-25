@@ -1,0 +1,9 @@
+# References
+- https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide?view=sql-server-ver16
+- https://www.sqlshack.com/locking-sql-server/
+- https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql?view=sql-server-ver16
+- https://learn.microsoft.com/en-us/sql/relational-databases/stored-procedures/create-a-stored-procedure?view=sql-server-ver16
+- https://www.sqlservercentral.com/forums/topic/tablockx-vs-tablock-xlock
+- https://learn.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql?view=sql-server-ver16
+- https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms191165(v=sql.105)?redirectedfrom=MSDN
+- https://stackoverflow.com/questions/36731046/t-sql-xquery-node-value-path-not-matching
