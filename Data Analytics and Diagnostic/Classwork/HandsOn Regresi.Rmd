@@ -1,0 +1,153 @@
+---
+title: "HandsOn Regresi Linier Sederhana"
+author: "Jihan Husnia Utomo (NRP 5026211019)"
+date: "2023-12-01"
+output:
+  html_document: default
+---
+
+Menggunakan library 'dplyr' untuk manipulasi data yang berguna dalam proses analisis dan eksplorasi data.
+library(dplyr)
+
+# Melihat isi dataset pada beberapa baris pertama.
+```{r}
+head(ads) 
+```
+
+# Melihat ringkasan dari dataset, seperti nilai minimum, maximum, Q1, Q3, median, dan mean.
+```{r}
+summary(ads)
+```
+
+
+DESCRIPTIVE
+1. Question 1: Did the data pretty much aligned in one direction?
+2. Question 2: The more you spend on what ads that the more sales you can expect?
+
+Karena datanya numerik, maka kita akan menggunakan scatter plot untuk melihat korelasinya. 
+
+# Berdasarkan keterangan pada modul, variabel dependen dan variabel independen dalam dataset ini adalah sebagai berikut:
+- Variabel dependen: Sales
+- Variabel independen: TV, Radio, Newspaper
+
+# DIAGNOSTIC
+1. Question 1: Which variable has the highest and lowest correlation with sales?
+2. Question 2: Find the regression model (intercept and slope)!
+
+# Intercept merupakan jarak suatu titik terhadap garis. Slope merupakan tingkat kemiringan dari garis linear.
+intercept --> besar perubahan nilai Y saat X bernilai 0
+slope --> besar perubahan nilai Y setiap kenaikan 1 nilai X
+
+Berikut kode yang digunakan untuk menghitung korelasi antar variabel:
+```{r}
+num_cols <- sapply(ads, is.numeric)
+cor_data <- cor(ads[,num.cols])
+cor_data
+```
+* is.numeric dipakai untuk menarik nilai-nilai yang bernilai numerik saja.
+
+# num_cols <- sapply(ads, is.numeric)
+--> Baris ini membuat vektor bernama num.cols, yang akan berisi nilai TRUE atau FALSE untuk setiap kolom dalam data frame ads, menunjukkan apakah kolom tersebut bersifat numerik atau tidak. Fungsi sapply() digunakan untuk menerapkan fungsi is.numeric() pada setiap kolom dalam ads.
+
+# cor_data <- cor(ads[,num.cols])
+--> Baris ini menghitung korelasi antara kolom-kolom yang bersifat numerik dalam ads. Fungsi cor() digunakan untuk menghitung korelasi, dan ads[,num.cols] digunakan untuk memilih hanya kolom-kolom yang bersifat numerik dari ads.
+
+Agar matrix korelasi antar variabel di bagian sebelumnya dapat divisualisasikan, maka dilakukan import library 'corrplot' sebagai berikut:
+```{r}
+library(corrplot)
+```
+
+Berikut kode untuk menampilkan matrix korelasi dengan visualisasi heatmap:
+```{r}
+corrplot(cor.data, method='color')
+```
+
+# Matrix korelasi juga dapat divisualisasikan dengan heatmap yang mengandung angka seperti berikut:
+```{r}
+corrplot(cor.data, method='number', number.digits = 2)
+```
+
+Apabila matrix korelasi pada gambar di atas ingin diberi warna hijau tua, maka dapat ditambahkan kode 'bg' pada query-nya:
+```{r}
+corrplot(cor.data, method='number', number.digits = 2, bg='darkgreen')
+```
+
+# lm([target] ~ [predictor / features], data = [data source])
+Selanjutnya, dibuat model regresi linear untuk menemukan hubungan antara variabel 'Sales' dengan variabel 'TV', dimana variabel 'TV' berperan sebagai variabel yang digunakan untuk memprediksi variabel dependen 'Sales' dengan kode sebagai berikut:
+```{r}
+model1 <- lm(Sales ~ TV, data=ads)
+summary(model1)
+```
+* Dari hasil summary model regresi linear di atas, yang perlu diperhatikan adalah kolom Pr(>|t|) atau p-value. Apabila nilai p-value semakin mendekati 1, maka modelnya kurang bagus. Akan tetapi, apabila semakin mendekati 0, maka modelnya semakin bagus dan akurat.
+* Berbeda dengan p-value, apabila nilai R-squared semakin mendekati 1, maka modelnya semakin bagus.
+* Residual merupakan nilai selisih dari nilai aktual dengan nilai prediksi
+
+
+Selanjutnya, dibuat model regresi linear dengan menggunakan dataset 'ads' yang telah dibagi menjadi 70% data training dan 30% data testing. Pada studi kasus kali ini, kita akan menggunakan seed ke-100 untuk digunakan dalam pembangunan model regresi linear.
+```{r}
+set.seed(100)
+```
+
+Untuk membangun model regresi linear, maka library 'caTools' harus diimport terlebih dahulu agar function yang dibutuhkan dalam membangun model dapat digunakan. Berikut kode untuk import library 'caTools':
+```{r}
+library(caTools)
+```
+
+Berikut kode untuk membagi dataset 'ads' untuk variabel 'TV' menjadi 70% data training dan 30% data testing:
+```{r}
+sample <- sample.split(ads$TV, SplitRatio = 0.7)
+train = subset(ads, sample == TRUE)
+test = subset(ads, sample == FALSE)
+```
+* "sample == TRUE" penulisan tanda sama dengan (=) harus ditulis 2 agar condition dari query berjalan, seperti "Jika sample bernilai TRUE, maka ...". Apabila hanya ditulis 1, maka akan muncul pesan warning dan sample tidak akan terbagi menjadi 140 data train dan 60 data test.
+
+Pada model 2, dibuat model regresi linear untuk menemukan hubungan antara variabel 'Sales' dengan variabel 'TV'. Perbedaannya dengan model 1 adalah model 2 menggunakan data yang tersimpan di variabel 'train' sebagai dasar untuk membangun model regresi linearnya, yaitu sebagai berikut:
+```{r}
+model2 <- lm (Sales ~ TV, data = train)
+summary(model2)
+```
+
+Berikut kode yang digunakan untuk mengecek nilai residual yang didapat dari pelatihan model regresi linear:
+```{r}
+res <- residuals(model2)
+res <- as.data.frame(res)
+head(res)
+```
+
+# Answer 2: Nilai intercept dan slope dari masing-masing model regresi linear yang telah dibuat dapat dilihat pada kolom 'Estimate' di summary setiap model yang mana baris 'intercept' merupakan nilai intercept dari model dan baris 'TV' dan 'Radio' merupakan nilai slope dari modelnya.
+Model1 --> Intercept: 7.032594, Slope: 0.047537 | Sales = 7.032594 + (0.047537 * TV)
+Model2 --> Intercept: 6.832838, Slope: 0.052095 | Sales = 6.832838 + (0.052095 * TV)
+
+
+# PREDICTIVE
+1. Question 1: What is the predicted sales value?
+2. Question 2: The model can predict …% of the data correctly
+
+Selanjutnya kita melakukan prediksi pada variabel 'Sales' menggunakan model regresi linear yang telah dibuat sebelumnya dengan menggunakan menggunakan data testing.
+
+# Answer 1: Predicted sales value merupakan nilai prediksi hasil penjualan yang diperoleh dari penggunaan data testing sebagai input dari model regresi linear yang telah dibuat.
+
+Berikut kode untuk memprediksi variabel 'Sales' menggunakan model 1 dan data testing:
+```{r}
+sales_prediction <- predict(model2, test)
+sales_prediction
+```
+
+Hasil prediksi penjualan menggunakan model 1 selanjutnya dibandingkan dengan penjualan yang sebenarnya yang ada di dalam data testing:
+```{r}
+result <- cbind(sales_prediction, test$Sales)
+result
+```
+
+Selanjutnya tingkat akurasi dari model 1 dan 2 yang telah dibuat dihitung dengan menggunakan R-squared error value menggunakan code sebagai berikut:
+```{r}
+rsq1 = summary(model1)$r.sq
+rsq2 = summary(model2)$r.sq
+rsq1
+rsq2
+```
+
+# Answer 2: Berdasarkan hasil perhitungan R-squared error pada masing-masing model, diperoleh tingkat akurasi sebagai berikut.
+# Model 1 memiliki tingkat akurasi 0.6118751 atau 61.18%
+# Model 2 memiliki tingkat akurasi 0.6638551 atau 66.38%
+

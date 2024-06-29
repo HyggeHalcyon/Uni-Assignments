@@ -1,0 +1,98 @@
+---
+title: "DBScan HO Clustering"
+author: "Kevin Andreas Kurniawan Effendy_5026221039"
+date: "2024-06-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pastikan sudah terintall package dbscan, leaflet dan fishualize!
+jika belum, jalankan cell ini :)
+```{r}
+#install.packages("dbscan")
+#install.packages("leaflet")
+#install.packages("fishualize")
+```
+
+```{r}
+library(dbscan)
+
+fire <- read.csv('australiafire.csv')
+head(fire)
+```
+Data australia fire memiliki 3 variabel utama yaitu latitude, longitude, dan confidence. Nilai confidence berada pada rentang dari 0 hingga 100 yang menunjukkan tingkat keyakinan (probabilitas) kebakaran terjadi.
+
+Sebelum proses clustering, data fire akan divisualisasikan dalam bentuk peta menggunakan packages leaflet.
+*install packages leaflet terlebih dahulu
+
+```{r}
+library(leaflet)
+library(dplyr)
+```
+
+```{r}
+leaflet(data = fire) %>% 
+  addTiles() %>% 
+  setView(lng = 133.7751,lat = -25.2744,zoom =  4) %>% 
+  addCircleMarkers(lng = ~longitude, 
+                   lat = ~latitude, 
+                   radius =1)
+```
+Dari hasil visualisasi diatas nampak bahwa titik kebakaran berkumpul pada beberapa area, dan beberapa titik kebakaran berada jauh dari kerumunan yang ada (kemungkinan ini adalah noise).
+
+Tahap selanjutnya adalah menentukan nilai MinPts dan Eps yang optimum dengan menggunakan fungsi KNNdistplot.
+
+```{r}
+kNNdistplot(fire[,1:2], k = 10)
+abline(h= 0.8, col = "red", lty = 3)
+```
+Keterangan:
+1. Fungsi menghitung jarak dari setiap titik ke tetangga terdekat ke-10 dalam data fire berdasarkan kolom latitude dan longitude.
+2. Diasumsikan awal, nilai eps yang optimal menggunakan eps = 0.8 (garis merah)
+
+Dengan menggunkan k = 10 maka didapat nilai eps sebesar 0.8 berdasarkan “knee” yang terbentuk dari plot.
+
+Selanjutnya proses pembuatan cluster menggunakan fungsi dbscan dengan menggunakan parameter yang sudah didapat yaitu minPts = 10 dan eps = 0.8.
+
+```{r}
+fire_clust <- dbscan(fire[,1:2], eps = 0.8, minPts = 10)
+```
+
+```{r}
+fire_clust
+```
+Clustering yang dilakukan menghasilkan 53 cluster dan 276 data noise (indeks 0). Cluster dengan jumlah anggota terbanyak dimiliki cluster 1 dengan 24305 anggota cluster dan cluser 38, 48 dan 45 sebagai cluster dengan anggota cluster paling sedikit yaitu 10.
+
+Hasil Cluster dapat divisualisasikan dalam peta untuk melihat persebaran cluster yang dibentuk.
+```{r}
+# membuat kolom baru untuk cluster
+fire <- fire %>% 
+  mutate(clust = fire_clust$cluster)
+```
+
+```{r}
+library(fishualize)
+```
+```{r}
+# membuat pallet color untuk setiap cluster
+pallet <- fishualize::fish(n = length(unique(fire$clust)), option = "Bryaninops_natans")
+```
+
+```{r}
+pal <- colorFactor(pallet, domain = unique(fire$clust))
+```
+
+```{r}
+# visualisasi cluser tanpa data noise
+leaflet(data = fire[fire$clust !=0,]) %>% #tanpa noise
+  addTiles() %>% 
+  setView(lng = 133.7751,lat = -25.2744,zoom =  4) %>% 
+  addCircleMarkers(lng = ~longitude, 
+                   lat = ~latitude, 
+                   radius =1,
+                   color = ~pal(clust))
+```
+Kebakaran padat di area pesisir tenggara dan timur laut Australia (pesisir timur)

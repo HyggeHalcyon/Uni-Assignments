@@ -1,0 +1,171 @@
+
+
+```{r}
+install.packages("generalhoslem")
+install.packages("car")
+install.packages("p")
+install.packages("carData")
+install.packages("readr")
+
+```
+```{r}
+library(readr)
+library(generalhoslem)
+library(pscl)
+library(car)
+```
+
+
+```{r}
+data <- read.csv("E:/Praktikum ADD/diabetes.csv")
+data
+```
+```{r}
+Y<-as.factor(data$Outcome)
+X1<-data$Glucose
+X2<-data$BloodPressure
+X3<-data$BMI
+X4<-data$DiabetesPedigreeFunction
+
+# Membentuk data frame
+data_diabetes<-data.frame(X1,X2,X3,X4,Y)
+str(data_diabetes)
+
+```
+
+```{r}
+summary(data_diabetes)
+```
+```{r}
+# Menghitung variansi dari setiap kolom dalam data frame
+var_X1 <- var(data_diabetes$X1)
+var_X2 <- var(data_diabetes$X2)
+var_X3 <- var(data_diabetes$X3)
+var_X4 <- var(data_diabetes$X4)
+var_Y <- var(as.numeric(data_diabetes$Y))  # Y adalah faktor, perlu diubah menjadi numerik untuk menghitung variansi
+
+# Menampilkan hasil variansi
+cat("Variance of X1:", var_X1, "\n")
+cat("Variance of X2:", var_X2, "\n")
+cat("Variance of X3:", var_X3, "\n")
+cat("Variance of X4:", var_X4, "\n")
+cat("Variance of Y:", var_Y, "\n")
+
+```
+
+```{r}
+YES <- sum(data_diabetes$Y == 1)
+NO <- sum(data_diabetes$Y == 0)
+slices <- c(YES, NO)
+lbls <- c("Teridentifikasi", "Tidak Teridentifikasi")
+lbls <- paste(lbls, slices)
+lbls <- paste(lbls)
+pie(slices, labels = lbls, col = rainbow(length(lbls)), main = "Pie Chart of Diabetes")
+
+```
+
+
+
+
+```{r}
+#reg1
+reg1 <- lm(X1~X2+X3, data=data_logistik)
+
+#reglog2
+reglog2 <- glm(X2~X1+X3, family = binomial, data =data_logistik)
+
+#reglog3
+reglog3 <- glm(X3~X1+X2, family = binomial, data =data_logistik)
+
+```
+
+
+```{r}
+#reg1
+reg1 <- lm(X1 ~ X2 + X3 + X4, data = data_diabetes)
+
+vif_values <- vif(reg1)
+print(vif_values)
+
+#reg2
+reg2 <- lm(X2 ~ X1 + X3 + X4, data = data_diabetes)
+
+vif_values2 <- vif(reg2)
+print(vif_values2)
+
+#reg3
+reg3 <- lm(X3 ~ X1 + X2 + X4, data = data_diabetes)
+
+vif_values3 <- vif(reg3)
+print(vif_values3)
+
+#reg4
+reg4 <- lm(X4 ~ X1 + X2 + X3, data = data_diabetes)
+
+vif_values4 <- vif(reg4)
+print(vif_values3)
+
+```
+
+
+```{r}
+reglog<-glm(Y~X1+X2+X3+X4, family = binomial, data = data_diabetes)
+summary(reglog)
+```
+```{r}
+pR2(reglog)
+qchisq(0.95,3)
+```
+
+
+
+```{r}
+summary(reglog)
+```
+
+```{r}
+R_square<-1-(104.41/131.79)
+R_square
+```
+
+
+```{r}
+beta <- coef(reglog)
+OR_beta <- exp(beta)
+cbind(beta, OR_beta)
+
+```
+
+```{r}
+yp_hat<-fitted(reglog)
+data_diabetes$yp_hat<-yp_hat
+data_diabetes
+
+class<-table(data_diabetes$Y,data_diabetes$yp_hat>0.5)
+class
+```
+
+```{r}
+# Uji Hosmer-Lemeshow untuk mengevaluasi kecocokan model regresi logistik
+hoslem_test <- generalhoslem::logitgof(data_diabetes$Y, fitted(reglog))
+
+# Menampilkan hasil uji
+print(hoslem_test)
+
+```
+YEAYYYYY SUDAH SELESAI :D
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

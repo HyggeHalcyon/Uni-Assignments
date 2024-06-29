@@ -1,0 +1,144 @@
+---
+title: "Multiple Regression"
+author: "Kevin Andreas Kurniawan Effendy_5026221039"
+date: "2024-05-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+evals <- read.csv("evals.csv")
+```
+
+```{r}
+evals
+```
+
+```{r}
+summary(evals)
+```
+```{r}
+hist(evals$score, xlab = "Evaluation Scores", main = "Distribution of Evaluation Scores", nclass = 25)
+```
+
+```{r}
+plot(jitter(evals$score) ~ evals$bty_avg)
+```
+
+```{r}
+plot(jitter(evals$score) ~ evals$bty_avg, main = "Score vs. Beauty Average", 
+     xlab = "Beauty Average", ylab = "Score")
+
+m_bty <- lm(score ~ bty_avg, data = evals)
+
+abline(m_bty, col = "red")
+```
+
+```{r}
+summary(m_bty)
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(m_bty)
+```
+
+```{r}
+plot(evals$bty_avg ~ evals$bty_f1lower)
+```
+
+```{r}
+cor(evals$bty_avg, evals$bty_f1lower)
+```
+
+```{r}
+library(psych)
+```
+
+
+```{r}
+pairs.panels(evals[,13:19], ellipses = FALSE)
+```
+
+```{r}
+m_full <- lm(score ~ age + cls_perc_eval + cls_did_eval + cls_students + bty_f1lower +
+bty_f1upper + bty_f2upper + bty_m1lower + bty_m1upper + bty_m2upper + bty_avg,
+data = evals)
+```
+
+
+```{r}
+summary(m_full)
+```
+
+```{r}
+library(car)
+```
+
+```{r}
+vif(m_full)
+```
+
+```{r}
+sqrt(vif(m_full))
+```
+
+```{r}
+model2 <- lm(score ~ age + cls_perc_eval + cls_did_eval + cls_students + bty_avg,
+data = evals)
+```
+
+
+```{r}
+summary(model2)
+```
+
+```{r}
+model3 <- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval + cls_students +
+cls_did_eval + bty_avg, data = evals)
+```
+
+
+```{r}
+summary(model3)
+```
+
+```{r}
+model4 <- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval + cls_did_eval + bty_avg,
+data = evals)
+```
+
+
+```{r}
+summary(model4)
+```
+
+```{r}
+library(car)
+Anova(model4)
+```
+
+```{r}
+model5 <- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval + bty_avg,
+data = evals)
+```
+
+```{r}
+Anova(model5)
+```
+
+```{r}
+model6 <- lm(score ~ rank + gender + language + age + cls_perc_eval + bty_avg, data = evals)
+```
+
+
+```{r}
+Anova(model6)
+```
+
+```{r}
+summary(model6)
+```
+
