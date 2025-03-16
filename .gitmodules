@@ -1,3 +1,9 @@
 [submodule "ES234317- Data Structure & Algorithm/Final Project/JavaFX-Graph-Simulator"]
 	path = Data Structure & Algorithm/Final Project/JavaFX-Graph-Simulator
 	url = https://github.com/HyggeHalcyon/JavaFX-Graph-Simulator.git
+[submodule "Emerging Technology/Final Project"]
+	path = Emerging Technology/Final Project
+	url = https://github.com/HyggeHalcyon/FP-Mobile-Programming.git
+[submodule "Data Lakehouse/dbserver/mywind-master"]
+	path = Data Lakehouse/dbserver/mywind-master
+	url = https://github.com/busynovadad/northwind-MySQL.git

@@ -1,0 +1,96 @@
+title: "DB-Scan Hands-On"
+output: html_document
+---
+
+# Setup
+```{r}
+# Import necessary libraries
+library(cluster)
+library(factoextra)
+library(ggplot2)
+library(dbscan)
+library(dplyr)
+library(reshape2)
+```
+
+```{r}
+#Load Dataset
+data <- read.csv("./RFM_customer.csv")
+# Display the dataset
+print(data)
+```
+
+```{r}
+# Get a summary of the dataset
+summary(data)
+```
+
+# Data Preprocessing
+## Null/Missing Data
+```{r}
+# Check for missing values
+colSums(is.na(data))
+```
+
+## Outliers
+```{r}
+# Visualize outliers with boxplots
+boxplot_data <- melt(data)
+ggplot(boxplot_data, aes(x = variable, y = value)) + 
+  geom_boxplot() +
+  labs(x = "Variable", y = "Value") +
+  facet_wrap(~variable, scales = "free") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Remove outliers using IQR
+Q1 <- apply(data, 2, quantile, probs = 0.25)
+Q3 <- apply(data, 2, quantile, probs = 0.75)
+IQR <- Q3 - Q1
+upper <- Q3 + 1.5 * IQR
+lower <- Q1 - 1.5 * IQR
+cleaned_data <- data
+for (i in 1:ncol(data)) {
+  cleaned_data <- cleaned_data[cleaned_data[, i] >= lower[i] & cleaned_data[, i] <= upper[i], ]
+}
+print(cleaned_data)
+```
+
+# DBScan Clustering
+
+```{r}
+# Select columns for clustering
+clustering_data <- cleaned_data[1:4]
+# Standardize the data
+scaled_data <- scale(clustering_data)
+print(scaled_data)
+```
+
+
+```{r}
+# Determine optimal parameters for DBSCAN
+kNNdistplot(scaled_data, k = 5)
+abline(h = 0.5, lty = 2)
+```
+
+
+```{r}
+# Apply DBSCAN clustering
+set.seed(123)
+dbscan_result <- dbscan(scaled_data, eps = 0.5, minPts = 5)
+print(dbscan_result)
+```
+
+
+```{r}
+# Visualize the DBSCAN clustering result
+fviz_cluster(dbscan_result, data = scaled_data, geom = "point")
+```
+
+
+```{r}
+# Add cluster labels to the dataset
+cleaned_data$cluster <- dbscan_result$cluster
+print(cleaned_data)
+```

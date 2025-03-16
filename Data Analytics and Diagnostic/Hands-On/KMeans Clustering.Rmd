@@ -1,0 +1,92 @@
+---
+title: "K-Means Clustering Hands-On"
+output: html_document
+---
+
+# Setup
+```{r}
+# Import necessary libraries
+library(cluster)    # Clustering algorithms
+library(factoextra) # Visualizing clustering results
+library(ggplot2)    # Plotting
+```
+
+```{r}
+#Load Dataset
+data <- read.csv("./RFM_customer.csv")
+# Display the dataset
+print(data)
+```
+
+```{r}
+# Get a summary of the dataset
+summary(data)
+```
+# Data Preprocessing
+## Null/Missing Data
+```{r}
+# Check for missing values
+colSums(is.na(data))
+```
+
+## Outliers
+```{r}
+# Visualize outliers with boxplots
+library(reshape2)
+boxplot_data <- melt(data)
+ggplot(boxplot_data, aes(x = variable, y = value)) + 
+  geom_boxplot() +
+  labs(x = "Variable", y = "Value") +
+  facet_wrap(~variable, scales = "free") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Remove outliers using IQR
+Q1 <- apply(data, 2, quantile, probs = 0.25)
+Q3 <- apply(data, 2, quantile, probs = 0.75)
+IQR <- Q3 - Q1
+upper <- Q3 + 1.5 * IQR
+lower <- Q1 - 1.5 * IQR
+cleaned_data <- data
+for (i in 1:ncol(data)) {
+  cleaned_data <- cleaned_data[cleaned_data[, i] >= lower[i] & cleaned_data[, i] <= upper[i], ]
+}
+print(cleaned_data)
+```
+
+# Clustering
+## Determine Optimal Number of Clusters
+```{r}
+# Select columns for clustering
+kluster <- cleaned_data[1:4]
+# Standardize the data
+scaled_data <- scale(kluster)
+# Calculate distance matrix
+distance <- get_dist(scaled_data)
+fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+```
+
+```{r}
+# Use the Elbow Method
+fviz_nbclust(kluster, kmeans, method = "wss")
+# Use the Silhouette Method
+fviz_nbclust(kluster, kmeans, method = "silhouette")
+```
+## K-Means 
+### 3 Cluster
+```{r}
+# Apply K-Means clustering with 3 clusters
+k3 <- kmeans(scaled_data, centers = 3, nstart = 25)
+print(k3)
+# Visualize the clustering result for k = 3
+fviz_cluster(k3, data = kluster)
+```
+### 2 Cluster
+```{r}
+# Apply K-Means clustering with 2 clusters
+k2 <- kmeans(scaled_data, centers = 2, nstart = 25)
+print(k2)
+# Visualize the clustering result for k = 2
+fviz_cluster(k2, data = kluster)
+```

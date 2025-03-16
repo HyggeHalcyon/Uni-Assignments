@@ -1,0 +1,11 @@
+services:
+ db:
+  #  image: mysql:latest
+  build: .
+  container_name: datalakehouse
+  restart: on-failure
+  environment:
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=DL
+  ports:
+    - 3306:3306
